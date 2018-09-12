@@ -73,5 +73,105 @@ def detect_faces(path, content = None):
 
         print('face bounds: {}'.format(','.join(vertices)))
 
+def detect_crop_hints(path):
+    """Detects crop hints in an image."""
+    client = vision.ImageAnnotatorClient()
+
+    with io.open(path, 'rb') as image_file:
+        content = image_file.read()
+    image = vision.types.Image(content=content)
+
+    crop_hints_params = vision.types.CropHintsParams(aspect_ratios=[1.77])
+    image_context = vision.types.ImageContext(
+        crop_hints_params=crop_hints_params)
+
+    response = client.crop_hints(image=image, image_context=image_context)
+    hints = response.crop_hints_annotation.crop_hints
+
+    for n, hint in enumerate(hints):
+        print('\nCrop Hint: {}'.format(n))
+
+        vertices = (['({},{})'.format(vertex.x, vertex.y)
+                    for vertex in hint.bounding_poly.vertices])
+
+        print('bounds: {}'.format(','.join(vertices)))
+
+def localize_objects(path):
+    """Localize objects in the local image.
+
+    Args:
+    path: The path to the local file.
+    """
+    from google.cloud import vision_v1p3beta1 as vision
+    client = vision.ImageAnnotatorClient()
+
+    with open(path, 'rb') as image_file:
+        content = image_file.read()
+    image = vision.types.Image(content=content)
+
+    objects = client.object_localization(
+        image=image).localized_object_annotations
+
+    print('Number of objects found: {}'.format(len(objects)))
+    for object_ in objects:
+        print('\n{} (confidence: {})'.format(object_.name, object_.score))
+        print('Normalized bounding polygon vertices: ')
+        for vertex in object_.bounding_poly.normalized_vertices:
+            print(' - ({}, {})'.format(vertex.x, vertex.y))
+    
+def annotate(path):
+    """Returns web annotations given the path to an image."""
+    client = vision.ImageAnnotatorClient()
+
+    if path.startswith('http') or path.startswith('gs:'):
+        image = types.Image()
+        image.source.image_uri = path
+
+    else:
+        with io.open(path, 'rb') as image_file:
+            content = image_file.read()
+
+        image = types.Image(content=content)
+
+    web_detection = client.web_detection(image=image).web_detection
+
+    return web_detection
+
+
+def report(annotations):
+    """Prints detected features in the provided web annotations."""
+    if annotations.pages_with_matching_images:
+        print('\n{} Pages with matching images retrieved'.format(
+            len(annotations.pages_with_matching_images)))
+
+        for page in annotations.pages_with_matching_images:
+            print('Url   : {}'.format(page.url))
+
+    if annotations.full_matching_images:
+        print('\n{} Full Matches found: '.format(
+              len(annotations.full_matching_images)))
+
+        for image in annotations.full_matching_images:
+            print('Url  : {}'.format(image.url))
+
+    if annotations.partial_matching_images:
+        print('\n{} Partial Matches found: '.format(
+              len(annotations.partial_matching_images)))
+
+        for image in annotations.partial_matching_images:
+            print('Url  : {}'.format(image.url))
+
+    if annotations.web_entities:
+        print('\n{} Web entities found: '.format(
+              len(annotations.web_entities)))
+
+        for entity in annotations.web_entities:
+            print('Score      : {}'.format(entity.score))
+            print('Description: {}'.format(entity.description))
+
 if __name__ == '__main__':
-    detect_faces('/home/yxiao1996/workspace/EC601/PP1/tweeimg/imgs/002.jpg')
+
+    path = '/home/yxiao1996/workspace/EC601/PP1/tweeimg/imgs/000.jpg'
+
+    report(annotate(path))
+    #localize_objects(path)
