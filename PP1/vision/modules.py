@@ -27,6 +27,20 @@ class ImageAnnotator(object):
 
         self.image = image
 
+    def labelDetection(self):
+
+        """ Detect Labels in Image """
+
+        if self.image == None:
+            return
+
+        image = vision.types.Image(content=self.image)
+
+        labels = self.client.label_detection(image=image).label_annotations
+
+        print labels
+        return labels
+
     def cropHints(self, ratio = 0.618):
 
         """ Crop Region of Interest from image

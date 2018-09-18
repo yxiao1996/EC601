@@ -59,11 +59,16 @@ class stream(object):
 
                 debug_file.write(image)
 
-                count = (count + 1) % self.buf_size
-
                 image_file = open(self.buf_folder + "/%03d" % count + ".jpg", 'wb')
 
                 image_file.write(image)
+
+                debug_file.close()
+
+                image_file.close()
+
+                count = (count + 1) % self.buf_size
+
 
                 yield count, image
 
