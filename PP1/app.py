@@ -11,15 +11,20 @@ class App(object):
 
     def __init__(self, length = 10):
 
-        s = stream('@keinishikori', buf_size = length)
+        self.buf_folder = "/home/yxiao1996/workspace/EC601/PP1/tweeimg/imgs"
+
+        self.keypath = "/home/yxiao1996/workspace/keys/twitter/keys.yaml"
+
+        s = stream('@keinishikori',
+                    key_path = self.keypath,
+                    buf_folder = self.buf_folder,
+                    buf_size = length) 
 
         self.length = length
 
         self.gen = s.streamImage()
 
         self.a = ImageAnnotator()
-
-        self.buf_folder = "/home/yxiao1996/workspace/EC601/PP1/tweeimg/imgs"
 
         count = 0
 
@@ -33,7 +38,7 @@ class App(object):
 
             if (os.path.isfile(image_file)):
 
-                #detect_labels(path = image_file, content = image)
+                # using vision module to detect image labels
 
                 self.a.loadImage(image)
 
@@ -53,7 +58,7 @@ class App(object):
 
         # resize images
 
-        resizeImage("./tweeimg/imgs/")
+        resizeImage(self.buf_folder)
 
         # add labels to images
 

@@ -6,9 +6,12 @@ class stream(object):
 
     """image stream using Twitter API"""
 
-    def __init__(self, screen_name, buf_size = 10):
+    def __init__(self, screen_name, 
+                 buf_folder = "/home/yxiao1996/workspace/EC601/PP1/tweeimg/imgs",
+                 key_path = "/home/yxiao1996/workspace/keys/twitter/keys.yaml", 
+                 buf_size = 10):
 
-        keyfile = open("/home/yxiao1996/workspace/keys/twitter/keys.yaml")
+        keyfile = open(key_path)
 
         keys = yaml.load(keyfile)
 
@@ -27,7 +30,7 @@ class stream(object):
 
         self.screen_name = screen_name
 
-        self.buf_folder = "/home/yxiao1996/workspace/EC601/PP1/tweeimg/imgs"
+        self.buf_folder = buf_folder
 
         self.buf_size = buf_size
 
@@ -49,7 +52,7 @@ class stream(object):
 
             try:
 
-                # print new_tweets[0].entities['media'][0]['media_url']
+                # try to download image from tweet
 
                 image_url = new_tweets[0].entities['media'][0]['media_url']
 
