@@ -2,4 +2,7 @@
 *.jpg
 *.weights
 */logs/*
+*.tfevents.*
 */__pycache__/*
+*.npy
+*.pyc
