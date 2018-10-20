@@ -28,17 +28,20 @@ if __name__ == '__main__':
     '''
     parser.add_argument(
         '--model', type=str,
-        help='path to model weight file, default ' + YOLO.get_defaults("model_path")
+        help='path to model weight file, default ' + YOLO.get_defaults("model_path"),
+        default = ".\\logs\\000\\yolo_tiny_coco.h5"
     )
 
     parser.add_argument(
         '--anchors', type=str,
-        help='path to anchor definitions, default ' + YOLO.get_defaults("anchors_path")
+        help='path to anchor definitions, default ' + YOLO.get_defaults("anchors_path"),
+        default=".\\model_data\\tiny_yolo_anchors.txt"
     )
 
     parser.add_argument(
         '--classes', type=str,
-        help='path to class definitions, default ' + YOLO.get_defaults("classes_path")
+        help='path to class definitions, default ' + YOLO.get_defaults("classes_path"),
+        default=".\\model_data\\train_classes.txt"
     )
 
     parser.add_argument(

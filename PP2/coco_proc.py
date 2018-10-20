@@ -1,3 +1,4 @@
+import os
 from pycocotools.coco import COCO
 import pycocotools.mask as mask
 import os, sys, zipfile
@@ -62,19 +63,56 @@ class coco_worker(object):
         imgIds = self.coco.getImgIds(catIds=catIds)
 
         # Loop though the images
+        save_dir = "keras-yolo3/images/"
         for imgId in imgIds:
             img = self.coco.loadImgs(imgId)[0]
             img_path = self.dataDir + img['file_name']
             print(img_path)
-            try:
-                I = cv2.imread(img_path)
-                boxes, _ =  self._get_bound_box(img, catIds)
-                I = self._draw_bound_box(I, boxes)
-                cv2.imshow("Image Display", I)
-                cv2.waitKey(10)
-            except:
-                continue
+            #try:
+            I = cv2.imread(img_path)
+            # cv2.imwrite(save_dir + img['file_name'], I)
+            boxes, _ =  self._get_bound_box(img, catIds)
+            I = self._draw_bound_box(I, boxes)
+            cv2.imshow("Image Display", I)
+            cv2.waitKey(10)
+            #except:
+            #    continue
             time.sleep(3)
+        return
+
+    def save_recognition(self, classes, save_dir, img_num):
+
+        # --------------------------------- #
+        # Save Images into folders for training recognition
+        # --------------------------------- #
+
+        # Check all class in classes is legitimate
+        for c in classes:
+            if (c not in self.cat_names):
+                print("class not in coco: " + c)
+                return
+
+        catIds = self.coco.getCatIds(catNms=classes)
+        imgIds = self.coco.getImgIds(catIds=catIds)
+
+        # Check directories
+        class_name = classes[0]
+        save_folder = save_dir + class_name+'s'
+        if (not os.path.exists(save_folder)):
+            os.path.mkdir(save_folder)
+
+        # Loop though the images
+        for i, imgId in enumerate(imgIds):
+            if (i == img_num):
+                break
+            img = self.coco.loadImgs(imgId)[0]
+            img_path = self.dataDir + img['file_name']
+            print(img_path)
+            #try:
+            I = cv2.imread(img_path)
+            save_path = save_dir + class_name+'s' + '/' + class_name + "%03d"%i + ".jpg"
+            cv2.imwrite(save_path, I)
+            
         return
     
     def _draw_bound_box(self, img, boxes):
@@ -131,8 +169,8 @@ class coco_worker(object):
         # Set argument data_size to 0 to generate all data
         # --------------------------------- #
 
-        save_path = save_dir + "train.txt"
-        classes_save_path = classes_save_dir + "train_classes.txt"
+        save_path = save_dir + "train_bear.txt"
+        classes_save_path = classes_save_dir + "train_classes_bear.txt"
         save_file = open(save_path, "w")
         classes_save_file = open(classes_save_path, "w")
 
@@ -149,6 +187,7 @@ class coco_worker(object):
             class_dict[class_id[0]] = class_count
             class_count += 1
             classes_save_file.write(c + '\n')
+        print(class_dict)
 
         catIds = self.coco.getCatIds(catNms=classes)
         imgIds = self.coco.getImgIds(catIds=catIds)
@@ -174,6 +213,10 @@ class coco_worker(object):
 
             for i, box in enumerate(boxes):
 
+                class_ = box_classes[i]
+                if (class_ not in class_dict.keys()):
+                    continue
+
                 x_min = box[0]
                 y_min = box[1]
                 w = box[2]
@@ -183,7 +226,6 @@ class coco_worker(object):
 
                 new_line += " " + str(x_min) + "," + str(y_min) + "," + str(x_max) + "," + str(y_max) + ","
                 
-                class_ = box_classes[i]
                 label = class_dict[class_]
 
                 new_line += str(label) + ' '
@@ -209,4 +251,5 @@ if __name__ == "__main__":
     classes = ['tennis racket']
 
     #w.loop_classes(classes)
-    w.gen_train_txt(classes)
+    #w.gen_train_txt(classes)
+    w.save_recognition(["elephant"], "recognistion/data/train/", 1000)

@@ -19,10 +19,10 @@ config.gpu_options.per_process_gpu_memory_fraction = 0.75
 set_session(tf.Session(config=config))
 
 def _main():
-    annotation_path = 'train.txt'
+    annotation_path = 'train_bear.txt'
     log_dir = 'logs/000/'
-    classes_path = 'model_data/train_classes.txt'
-    anchors_path = 'model_data/tiny_yolo_anchors.txt'
+    classes_path = 'model_data/train_classes_bear.txt'
+    anchors_path = 'model_data/yolo_anchors.txt'
     class_names = get_classes(classes_path)
     num_classes = len(class_names)
     anchors = get_anchors(anchors_path)
@@ -33,13 +33,14 @@ def _main():
 
     is_tiny_version = len(anchors)==6 # default setting
     if is_tiny_version:
-        model_path = "logs/000/yolo_tiny_coco.h5"
+        model_path = "model_data/yolo_tiny.h5"
         model = create_tiny_model(input_shape, anchors, num_classes,
             freeze_body=2, weights_path=model_path)
     else:
-        model_path = "model_data/yolo.h5"
+        model_path = "logs/000/full/yolo_coco.h5"
+        log_dir += "full/"
         model = create_model(input_shape, anchors, num_classes,
-            freeze_body=2, weights_path='model_data/yolo.h5') # make sure you know what you freeze
+            freeze_body=2, weights_path=model_path) # make sure you know what you freeze
 
     logging = TensorBoard(log_dir=log_dir)
     checkpoint = ModelCheckpoint(log_dir + 'ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5',
@@ -69,12 +70,12 @@ def _main():
                 steps_per_epoch=max(1, num_train//batch_size),
                 validation_data=data_generator_wrapper(lines[num_train:], batch_size, input_shape, anchors, num_classes),
                 validation_steps=max(1, num_val//batch_size),
-                epochs=4,
+                epochs=1,
                 initial_epoch=0,
                 callbacks=[logging, checkpoint])
 
         if (is_tiny_version):
-            save_weights_path = log_dir + "yolo_tiny_coco.h5"
+            save_weights_path = log_dir + "yolo_tiny_coco_bear.h5"
         else:
             save_weights_path = log_dir + "yolo_coco.h5"
         model.save_weights(save_weights_path)

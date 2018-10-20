@@ -1,4 +1,5 @@
 *.h5
+*.jpg
 *.weights
 */logs/*
 */__pycache__/*
