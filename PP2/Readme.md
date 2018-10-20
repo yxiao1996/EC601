@@ -29,9 +29,10 @@ In this assignment, I used data from MS COCO dataset to train image classificati
 
 ### Image Classification Model
 
-![all train acc](images/all_train_acc.png "train accuracy")
-![all train loss](images/all_train_loss.png "train loss")
-![all val acc](images/all_val_acc.png "val acc")
-![all val loss](images/all_val_loss.png "val loss")
+<img src="images/all_train_acc.png" height=200>
+<img src="images/all_train_loss.png" height=200>
+<img src="images/all_val_acc.png" height=200>
+<img src="images/all_val_loss.png" height=200>s
+
 
 ### Object Recognition Model
