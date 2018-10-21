@@ -24,15 +24,114 @@ In this assignment, I used data from MS COCO dataset to train image classificati
     1. tensorflow-gpu(1.11.0)
     2. Keras(2.1.5)
     3. OpenCV(3.4.3)
+    4. cocoapi(Python)  # used for processing MS COCO dataset
+* Dataset
+  
+    MS COCO
+    
 
 ## How it Works?
 
 ### Image Classification Model
 
-<img src="images/all_train_acc.png" height=200>
-<img src="images/all_train_loss.png" height=200>
-<img src="images/all_val_acc.png" height=200>
-<img src="images/all_val_loss.png" height=200>s
+In this section, I will introduce how to train a image recognition model using code in this repo. After following the great tutorial from Keras, here I will introduce three ways to train a image classification model using data from MS COCO dataset. 
+
+#### Data Preparation
+
+First thing you have to do is to prepare data(images). Since we are trying to train classification model, the work of data preparation is relatively easy. What we have to do only is putting images into correct directory(using the name of the folder as label). 
+
+Using the **coco_proc.py** to prepare data:
+
+Open the coco_proc.py file, scroll down to the bottom, then you can find the main function. 
+
+
+``` Python
+if __name__ == "__main__":
+
+    sets = {'train': 'train2017',
+                'val': 'val2017'}   # Modify the dataset name here corresponding to what you actually download
+
+    coco_path = 'D:\\downloads\\datasets\\'  # Modify the path here correponding to the directory you store you dataset folders
+
+    w = coco_worker(dataDir = coco_path,
+                    dataType = sets['train'])
+
+    classes = ['tennis racket']  # The class you want to refer, for now it only support single class
+    # TODO: support refering to multiple classes 
+
+    #w.loop_classes(classes)   # Looping throught the dataset, checking images from specific class with bounding boxes
+    #w.gen_train_txt(classes)  # Prepare training data for YOLO models
+    w.save_recognition(["elephant"], "recognistion/data/train/", 1000)  # Prepare training data for image classification models
+```
+
+You have to specify the name of you dataset(typically the name of the folder contains image when you uncompressed the coco dataset, for example when you download the 2017 version coco training set, the folder name is "train2017"), here I have the 2017 version training set and validation set. You also have to specify where you store all the images. 
+
+In the last function **save_recognition()**, you need to specify the class you want to extract from coco and where you want to store them. Here I extract the class **elephant** from coco for training classification model. The other class I extracted is **giraffe**, so I run the code twice(actually 4 times, I also need to run other 2 times for extracting validation data). 
+
+```
+  python coco_proc.py
+```
+
+Then I can find the training and validating images in the subfolders(elephants & giraffes).
+
+  <img src="images/data_folder_structure.png" height=120>
+
+Sample image:
+
+  <img src="images/elephant000.jpeg" height=200>
+
+#### Training classification network with three models
+
+This section introduce how to train image classification model in three different ways: 
+
+  1. train from scratch(with a ad-hoc model architecture) # train
+  2. using the bottleneck feature to train classifier # bottleneck
+  3. apply transfer learning on a existed model # finetune
+
+##### Train from scratch
+
+  ```
+    python train.py
+  ```
+
+##### Using bottleneck feature
+
+  ```
+    python train_bottleneck.py
+  ```
+
+##### Fine-tune VGG-16 model
+
+  ```
+    python fine_tune.py
+  ```
+
+#### Ploting the training and validating curves(TensorBoard)
+
+```
+  cd recognistion/logs
+  tensorboard --logdir .
+```
+
+* legends
+
+  <img src="images/legends.png" height=80>
+
+* accuracy on training data
+
+  <img src="images/all_train_acc.png" height=200>
+
+* loss on training data
+
+  <img src="images/all_train_loss.png" height=200>
+
+* accuracy on validation data
+  
+  <img src="images/all_val_acc.png" height=200>
+
+* loss on validation data
+  
+  <img src="images/all_val_loss.png" height=200>
 
 
 ### Object Recognition Model

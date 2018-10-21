@@ -241,15 +241,16 @@ class coco_worker(object):
 if __name__ == "__main__":
 
     sets = {'train': 'train2017',
-                'val': 'val2017'}
+                'val': 'val2017'}   # Modify the dataset name here corresponding to what you actually download
 
-    coco_path = 'D:\\downloads\\datasets\\'
+    coco_path = 'D:\\downloads\\datasets\\'  # Modify the path here correponding to the directory you store you dataset folders
 
     w = coco_worker(dataDir = coco_path,
                     dataType = sets['train'])
 
-    classes = ['tennis racket']
+    classes = ['tennis racket']  # The class you want to refer, for now it only support single class
+    # TODO: support refering to multiple classes 
 
-    #w.loop_classes(classes)
-    #w.gen_train_txt(classes)
-    w.save_recognition(["elephant"], "recognistion/data/train/", 1000)
+    #w.loop_classes(classes)   # Looping throught the dataset, checking images from specific class with bounding boxes
+    #w.gen_train_txt(classes)  # Prepare training data for YOLO models
+    w.save_recognition(["elephant"], "recognistion/data/train/", 1000)  # Prepare training data for image classification models
