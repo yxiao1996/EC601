@@ -24,17 +24,17 @@ In this assignment, I used data from MS COCO dataset to train image classificati
     1. tensorflow-gpu(1.11.0)
     2. Keras(2.1.5)
     3. OpenCV(3.4.3)
-    4. cocoapi(Python)  # used for processing MS COCO dataset
+    4. [cocoapi](https://github.com/cocodataset/cocoapi)(Python)  # used for processing MS COCO dataset
 * Dataset
   
-    MS COCO
+    [MS COCO](http://cocodataset.org/#home)
     
 
 ## How it Works?
 
 ### Image Classification Model
 
-In this section, I will introduce how to train a image recognition model using code in this repo. After following the great tutorial from Keras, here I will introduce three ways to train a image classification model using data from MS COCO dataset. 
+In this section, I will introduce how to train a image recognition model using code in this repo. After following the great [tutorial from Keras](https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html), here I will introduce three ways to train a image classification model using data from MS COCO dataset. 
 
 #### Data Preparation
 
@@ -90,17 +90,23 @@ This section introduce how to train image classification model in three differen
 
 ##### Train from scratch
 
+  Train a neural network with ad-hoc architecture(3 convolutional layer and 2 fully-connected layer). The accuracy of this model is roughly 80%. 
+
   ```
     python train.py
   ```
 
 ##### Using bottleneck feature
 
+  Train a 2-layer classifier(fully-connected) with bottleneck feature extarcted from image with a pre-trained VGG-16 model(ImageNet). 
+
   ```
     python train_bottleneck.py
   ```
 
 ##### Fine-tune VGG-16 model
+
+  Fine tune a pretrained VGG-16 model(replace the original fully-connected layers with a classifier compatible with current data; Initialized the classifier from weights obtained in the step before).
 
   ```
     python fine_tune.py
@@ -135,3 +141,17 @@ This section introduce how to train image classification model in three differen
 
 
 ### Object Recognition Model
+
+  In this section, I will introduce how to train object detection model(YOLO) using data from MS COCO. The code is cloned from [qqwweee: keras-yolo3](https://github.com/qqwweee/keras-yolo3), with some minor modification.
+
+#### Data Preparation
+
+  To prepare data for training object detector, please comment out the last function in **coco_proc.py**. Instead, use the **gen_train_txt()** function and specify the class you want to extract in variable **classes**. You can check the data before you extract them using the **loop_classes** function, it go through all the images under the specified class with bounding box drew on the image. 
+
+```Python
+    #w.loop_classes(classes)   # Looping throught the dataset, checking images from specific class with bounding boxes
+    w.gen_train_txt(classes)  # Prepare training data for YOLO models
+    #w.save_recognition(["elephant"], "recognistion/data/train/", 1000)  # Prepare training data for image classification models
+```
+
+#### Train Object Detector
