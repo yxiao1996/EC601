@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2016
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "API_App_IronPy_WinForm", "API_App_IronPy_WinForm\API_App_IronPy_WinForm.pyproj", "{622DE1D2-9BD9-42A1-B660-B99B82BD859B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{622DE1D2-9BD9-42A1-B660-B99B82BD859B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{622DE1D2-9BD9-42A1-B660-B99B82BD859B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D6470FF7-07D4-464C-810F-A477F4CF333B}
+	EndGlobalSection
+EndGlobal

@@ -1,6 +1,7 @@
 import yaml
 import tweepy
 import urllib
+from urllib.request import urlopen
 
 class stream(object):
 
@@ -56,7 +57,7 @@ class stream(object):
 
                 image_url = new_tweets[0].entities['media'][0]['media_url']
 
-                image = urllib.urlopen(url = image_url).read()
+                image = urlopen(url = image_url).read()
 
                 debug_file = open('./debug.jpg', 'wb')
 
@@ -77,7 +78,7 @@ class stream(object):
 
             except Exception as e:
 
-                print "tweet does not contains image. ", e
+                print ("tweet does not contains image. ", e)
 
             new_tweets = self.api.user_timeline(screen_name = self.screen_name, count = 1, max_id = current_id)
 
@@ -103,4 +104,4 @@ if __name__ == "__main__":
 
     while(True):
 
-        print gen.next()
+        print (next(gen))

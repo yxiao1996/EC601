@@ -1,19 +1,19 @@
 import os.path
 import ffmpeg
-
+import sys
+sys.path.append(".\\vision")
 from tweeimg.streamer import stream
 from vision.funcs import *
 from vision.utils import *
 from vision.modules import ImageAnnotator
 
-
 class App(object):
 
     def __init__(self, length = 10):
 
-        self.buf_folder = "/home/yxiao1996/workspace/EC601/PP1/tweeimg/imgs"
+        self.buf_folder = "D:\\code_collection\\EC601\\EC601\\PP1\\tweeimg\\imgs"
 
-        self.keypath = "/home/yxiao1996/workspace/keys/twitter/keys.yaml"
+        self.keypath = "C:/Users/xiaoy/Documents/keys/twitter/key.yaml"
 
         s = stream('@keinishikori',
                     key_path = self.keypath,
@@ -32,7 +32,7 @@ class App(object):
         
         while(count < self.length - 1):
 
-            count, image = self.gen.next()
+            count, image = next(self.gen)
 
             image_file = self.buf_folder + "/%03d" % count + ".jpg"
 
@@ -54,7 +54,7 @@ class App(object):
 
             else:
 
-                print image_file + " does not exist"
+                print (image_file + " does not exist")
 
         # resize images
 

@@ -3,7 +3,6 @@ import io
 import PIL
 from PIL import Image
 import numpy as np
-
 from google.cloud import vision
 from google.cloud.vision import types
 from google.cloud import vision_v1p3beta1 as vision_beta
@@ -15,9 +14,12 @@ class ImageAnnotator(object):
     """ Annotate Image with Google vision API """
 
     def __init__(self):
+        from google.oauth2 import service_account
 
-        self.client = vision.ImageAnnotatorClient()
-        self.client_beta = vision_beta.ImageAnnotatorClient()
+        credentials = service_account.Credentials.from_service_account_file('D:\\keys\\google\\ec601-pp1-7e4843f1ee33.json')
+
+        self.client = vision.ImageAnnotatorClient(credentials=credentials)
+        self.client_beta = vision_beta.ImageAnnotatorClient(credentials=credentials)
 
         self.image = None
 
@@ -38,7 +40,7 @@ class ImageAnnotator(object):
 
         labels = self.client.label_detection(image=image).label_annotations
 
-        print labels
+        print (labels)
         return labels
 
     def cropHints(self, ratio = 0.618):
@@ -167,7 +169,7 @@ if __name__ == "__main__":
 
     for i, object_ in enumerate(objects):
 
-        print object_
+        print (object_)
 
         img_cropped = utils.cropNormalized(img_cropped, object_.bounding_poly.normalized_vertices)
 

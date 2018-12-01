@@ -4,3 +4,5 @@ This repository contains projects during EC601 Project Design at Boston Universi
 
 * PP1: Mini-Project 1 (APIs)
 * PP2: Mini-Project 2 (Deep Learning)
+
+* dev: Mini-Project 3 (Database)
