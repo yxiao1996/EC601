@@ -53,12 +53,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.mongo_dgv = new System.Windows.Forms.DataGridView();
+            this.stats_dataview = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.twitter_pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tweet_source)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.aPI_App_dbDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.cloud_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mongo_dgv)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.stats_dataview)).BeginInit();
             this.SuspendLayout();
             // 
             // debug
@@ -102,7 +104,7 @@
             this.tweet_list.Location = new System.Drawing.Point(385, 59);
             this.tweet_list.Margin = new System.Windows.Forms.Padding(2);
             this.tweet_list.Name = "tweet_list";
-            this.tweet_list.Size = new System.Drawing.Size(170, 256);
+            this.tweet_list.Size = new System.Drawing.Size(207, 256);
             this.tweet_list.TabIndex = 3;
             this.tweet_list.ValueMember = "Id";
             this.tweet_list.Click += new System.EventHandler(this.tweet_list_Click);
@@ -123,17 +125,17 @@
             // 
             // accont_tb
             // 
-            this.accont_tb.Location = new System.Drawing.Point(734, 25);
+            this.accont_tb.Location = new System.Drawing.Point(798, 25);
             this.accont_tb.Margin = new System.Windows.Forms.Padding(2);
             this.accont_tb.Name = "accont_tb";
-            this.accont_tb.Size = new System.Drawing.Size(159, 21);
+            this.accont_tb.Size = new System.Drawing.Size(210, 21);
             this.accont_tb.TabIndex = 4;
             this.accont_tb.Text = "@keinishikori";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(732, 9);
+            this.label1.Location = new System.Drawing.Point(796, 9);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(155, 12);
@@ -165,7 +167,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(430, 196);
+            this.dataGridView1.Size = new System.Drawing.Size(370, 216);
             this.dataGridView1.TabIndex = 9;
             // 
             // idDataGridViewTextBoxColumn
@@ -212,9 +214,9 @@
             this.mongo_lb.Cursor = System.Windows.Forms.Cursors.Default;
             this.mongo_lb.FormattingEnabled = true;
             this.mongo_lb.ItemHeight = 12;
-            this.mongo_lb.Location = new System.Drawing.Point(560, 59);
+            this.mongo_lb.Location = new System.Drawing.Point(597, 59);
             this.mongo_lb.Name = "mongo_lb";
-            this.mongo_lb.Size = new System.Drawing.Size(170, 256);
+            this.mongo_lb.Size = new System.Drawing.Size(195, 256);
             this.mongo_lb.TabIndex = 11;
             this.mongo_lb.Click += new System.EventHandler(this.mongo_lb_Click);
             // 
@@ -236,9 +238,9 @@
             this.cloud_panel.Controls.Add(this.clear_bt);
             this.cloud_panel.Controls.Add(this.stream_bt);
             this.cloud_panel.Controls.Add(this.change_acc_bt);
-            this.cloud_panel.Location = new System.Drawing.Point(734, 59);
+            this.cloud_panel.Location = new System.Drawing.Point(798, 59);
             this.cloud_panel.Name = "cloud_panel";
-            this.cloud_panel.Size = new System.Drawing.Size(158, 256);
+            this.cloud_panel.Size = new System.Drawing.Size(210, 256);
             this.cloud_panel.TabIndex = 13;
             // 
             // cl_del_bt
@@ -253,7 +255,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(385, 42);
+            this.label2.Location = new System.Drawing.Point(385, 25);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(65, 12);
             this.label2.TabIndex = 14;
@@ -262,7 +264,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(560, 41);
+            this.label3.Location = new System.Drawing.Point(595, 25);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(65, 12);
             this.label3.TabIndex = 15;
@@ -271,18 +273,28 @@
             // mongo_dgv
             // 
             this.mongo_dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.mongo_dgv.Location = new System.Drawing.Point(462, 343);
+            this.mongo_dgv.Location = new System.Drawing.Point(387, 343);
             this.mongo_dgv.Name = "mongo_dgv";
             this.mongo_dgv.ReadOnly = true;
             this.mongo_dgv.RowTemplate.Height = 23;
-            this.mongo_dgv.Size = new System.Drawing.Size(430, 196);
+            this.mongo_dgv.Size = new System.Drawing.Size(348, 216);
             this.mongo_dgv.TabIndex = 16;
+            // 
+            // stats_dataview
+            // 
+            this.stats_dataview.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.stats_dataview.Location = new System.Drawing.Point(741, 343);
+            this.stats_dataview.Name = "stats_dataview";
+            this.stats_dataview.RowTemplate.Height = 23;
+            this.stats_dataview.Size = new System.Drawing.Size(267, 216);
+            this.stats_dataview.TabIndex = 17;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(904, 551);
+            this.ClientSize = new System.Drawing.Size(1021, 571);
+            this.Controls.Add(this.stats_dataview);
             this.Controls.Add(this.mongo_dgv);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -296,9 +308,9 @@
             this.Controls.Add(this.debug);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(920, 610);
+            this.MaximumSize = new System.Drawing.Size(1037, 610);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(600, 590);
+            this.MinimumSize = new System.Drawing.Size(1037, 590);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "API App";
@@ -310,6 +322,7 @@
             this.cloud_panel.ResumeLayout(false);
             this.cloud_panel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mongo_dgv)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.stats_dataview)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -340,6 +353,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView mongo_dgv;
+        private System.Windows.Forms.DataGridView stats_dataview;
     }
 }
 

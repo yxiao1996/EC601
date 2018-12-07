@@ -17,7 +17,7 @@ using Microsoft.Win32;
 using System.Security.Permissions;
 using MongoDB.Driver;
 using MongoDB.Bson;
-
+using System.Collections;
 
 namespace API_App
 {
@@ -66,6 +66,7 @@ namespace API_App
 
             initial_read_mongo();  // mongodb test
             update_mongo_dataview();
+            update_stats_dataview();
         }
 
         private void init_google_confidential()
@@ -155,6 +156,62 @@ namespace API_App
             mongo_dgv.DataSource = table;
         }
 
+        private void update_stats_dataview()
+        {
+            var client = new MongoClient(@"mongodb://yxiao:ec601@ec601-app-cluster-shard-00-00-dishd.mongodb.net:27017,ec601-app-cluster-shard-00-01-dishd.mongodb.net:27017,ec601-app-cluster-shard-00-02-dishd.mongodb.net:27017/test?ssl=true&replicaSet=ec601-app-cluster-shard-0&authSource=admin&retryWrites=true");
+            var database = client.GetDatabase("ec601-app-cluster");
+            debug.Text = "mongodb connected";
+
+            var collection = database.GetCollection<BsonDocument>("api_data");
+
+            var filter = Builders<BsonDocument>.Filter.Empty;
+            var result = collection.Find(filter).ToList();
+
+            DataTable table = new DataTable();
+            table.Columns.Add(new DataColumn("Name", typeof(string)));
+            table.Columns.Add(new DataColumn("Value", typeof(string)));
+
+            int count = 0;
+            Hashtable desp_table = new Hashtable();
+            foreach (var doc in result)
+            {
+                count = count + 1;
+                string desp = doc["descripitor"].ToString();
+                if (desp_table.ContainsKey(desp))
+                {
+                    desp_table[desp] = (Convert.ToInt32(desp_table[desp]) + 1);
+                }
+                else
+                {
+                    desp_table[desp] = 0;
+                }
+            }
+            DataRow num_row = table.NewRow();
+            num_row["Name"] = "tweet number";
+            num_row["Value"] = count.ToString();
+            table.Rows.Add(num_row);
+
+            KeyValuePair<string, int> max = new KeyValuePair<string, int>();
+            int max_val = 0;
+            int val;
+            string max_desp = "N/A";
+            foreach (var key in desp_table.Keys)
+            {
+                val = Convert.ToInt32(desp_table[key]);
+                if (val > max_val)
+                {
+                    max_val = val;
+                    max_desp = key.ToString();
+                }
+            }
+            DataRow desp_row = table.NewRow();
+            desp_row["Name"] = "popular desp";
+            desp_row["Value"] = max_desp;
+            table.Rows.Add(desp_row);
+
+            stats_dataview.DataSource = table;
+        }
+
         private void stream_bt_Click(object sender, EventArgs e)
         {
             // get a new twitter image url from handle
@@ -217,6 +274,8 @@ namespace API_App
                         debug.Text = "bad data point";
                     }
                 }
+                update_mongo_dataview();
+                update_stats_dataview();
             }
 
         }
